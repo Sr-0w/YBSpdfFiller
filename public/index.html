@@ -1,52 +1,50 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>PDF Filler Form</title>
-</head>
-<body>
-    <form id="pdfFillerForm" action="/submit" method="post">
-        <label for="Contract_Name">Contract Name:</label><br>
-        <input type="text" id="Contract_Name" name="Contract_Name"><br>
-        <label for="Contract_FirstName">Contract First Name:</label><br>
-        <input type="text" id="Contract_FirstName" name="Contract_FirstName"><br>
-        <label for="Contract_address">Contract Address:</label><br>
-        <input type="text" id="Contract_address" name="Contract_address"><br>
-        <label for="Contract_PostalCode">Contract Postal Code:</label><br>
-        <input type="text" id="Contract_PostalCode" name="Contract_PostalCode"><br>
-        <label for="Contract_City">Contract City:</label><br>
-        <input type="text" id="Contract_City" name="Contract_City"><br>
-        <label for="Contract_Email">Contract Email:</label><br>
-        <input type="text" id="Contract_Email" name="Contract_Email"><br>
-        <label for="Contract_Phone_1">Contract Phone 1:</label><br>
-        <input type="text" id="Contract_Phone_1" name="Contract_Phone_1"><br>
-        <label for="Contract_Phone_2">Contract Phone 2:</label><br>
-        <input type="text" id="Contract_Phone_2" name="Contract_Phone_2"><br>
-        <label for="Installation_Name">Installation Name:</label><br>
-        <input type="text" id="Installation_Name" name="Installation_Name"><br>
-        <label for="Installation_FirstName">Installation First Name:</label><br>
-        <input type="text" id="Installation_FirstName" name="Installation_FirstName"><br>
-        <label for="Installation_Email">Installation Email:</label><br>
-        <input type="text" id="Installation_Email" name="Installation_Email"><br>
-        <label for="Installation_Street">Installation Street:</label><br>
-        <input type="text" id="Installation_Street" name="Installation_Street"><br>
-        <label for="Installation_PostalCode">Installation Postal Code:</label><br>
-        <input type="text" id="Installation_PostalCode" name="Installation_PostalCode"><br>
-        <label for="Installation_City">Installation City:</label><br>
-        <input type="text" id="Installation_City" name="Installation_City"><br>
-        <label for="Installation_Phone_1">Installation Phone 1:</label><br>
-        <input type="text" id="Installation_Phone_1" name="Installation_Phone_1"><br>
-        <label for="Installation_Phone_2">Installation Phone 2:</label><br>
-        <input type="text" id="Installation_Phone_2" name="Installation_Phone_2"><br>
-        <label for="Contract_NationalID">Contract National ID:</label><br>
-        <input type="text" id="Contract_NationalID" name="Contract_NationalID"><br>
-        <label for="Contract_SecuritasID">Contract Securitas ID:</label><br>
-        <input type="text" id="Contract_SecuritasID" name="Contract_SecuritasID"><br>
-        <label for="Contract_StreetNr">Contract Street Number:</label><br>
-        <input type="text" id="Contract_StreetNr" name="Contract_StreetNr"><br>
-        <label for="Installation_StreetNr">Installation Street Number:</label><br>
-        <input type="text" id="Installation_StreetNr" name="Installation_StreetNr"><br>
-        <input type="submit" value="Submit">
-        <script src="script.js"></script>
-    </form>
-</body>
-</html>
+<form id="securitasForm">
+    <h2>Données du client</h2>
+    <label for="Contract_Name">Nom:</label><br>
+    <input type="text" id="Contract_Name" name="Contract_Name"><br>
+    <label for="Contract_FirstName">Prénom:</label><br>
+    <input type="text" id="Contract_FirstName" name="Contract_FirstName"><br>
+    <label for="Contract_address">Adresse:</label><br>
+    <input type="text" id="Contract_address" name="Contract_address"><br>
+    <label for="Contract_PostalCode">Code Postal:</label><br>
+    <input type="text" id="Contract_PostalCode" name="Contract_PostalCode"><br>
+    <label for="Contract_City">Ville:</label><br>
+    <input type="text" id="Contract_City" name="Contract_City"><br>
+    <label for="Contract_Email">Email:</label><br>
+    <input type="email" id="Contract_Email" name="Contract_Email"><br>
+    <label for="Contract_Phone_1">Téléphone 1:</label><br>
+    <input type="tel" id="Contract_Phone_1" name="Contract_Phone_1"><br>
+    <label for="Contract_Phone_2">Téléphone 2:</label><br>
+    <input type="tel" id="Contract_Phone_2" name="Contract_Phone_2"><br>
+    <label for="Contract_NationalID">ID National:</label><br>
+    <input type="text" id="Contract_NationalID" name="Contract_NationalID"><br>
+    <label for="Contract_SecuritasID">ID Securitas:</label><br>
+    <input type="text" id="Contract_SecuritasID" name="Contract_SecuritasID"><br>
+    <label for="Contract_StreetNr">Numéro de Rue:</label><br>
+    <input type="text" id="Contract_StreetNr" name="Contract_StreetNr"><br>
+
+    <h2>Adresse d'installation</h2>
+    <label for="Installation_Name">Nom:</label><br>
+    <input type="text" id="Installation_Name" name="Installation_Name"><br>
+    <label for="Installation_FirstName">Prénom:</label><br>
+    <input type="text" id="Installation_FirstName" name="Installation_FirstName"><br>
+    <label for="Installation_Email">Email:</label><br>
+    <input type="email" id="Installation_Email" name="Installation_Email"><br>
+    <label for="Installation_Street">Rue:</label><br>
+    <input type="text" id="Installation_Street" name="Installation_Street"><br>
+    <label for="Installation_StreetNr">Numéro de Rue:</label><br>
+    <input type="text" id="Installation_StreetNr" name="Installation_StreetNr"><br>
+    <label for="Installation_PostalCode">Code postal:</label><br>
+    <input type="text" id="Installation_PostalCode" name="Installation_PostalCode"><br>
+    <label for="Installation_City">Commune:</label><br>
+    <input type="text" id="Installation_City" name="Installation_City"><br>
+    <label for="Installation_Phone_1">GSM:</label><br>
+    <input type="tel" id="Installation_Phone_1" name="Installation_Phone_1"><br>
+    <label for="Installation_Phone_2">Téléphone:</label><br>
+    <input type="tel" id="Installation_Phone_2" name="Installation_Phone_2"><br>
+
+    <input type="submit" value="Submit">
+    <script src="script.js"></script>
+</form>
+
+
