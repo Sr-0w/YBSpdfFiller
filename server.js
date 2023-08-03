@@ -56,7 +56,7 @@ app.post('/submit', async (req, res) => {
     // Send the filled PDF in the response
     console.log('Sending response');
     res.contentType('application/pdf');
-    res.setHeader('Content-Disposition', `attachment; filename="${path.basename(outputPdfPath)}"`);
+    res.setHeader('Content-Disposition', `attachment; filename=${path.basename(outputPdfPath)}`);
     res.sendFile(outputPdfPath);
   } catch (err) {
     console.error('An error occurred:', err);
