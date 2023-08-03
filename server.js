@@ -22,23 +22,11 @@ app.post('/submit', async (req, res) => {
 
     // Define the PDF file paths
     const pdfPath = path.join(__dirname, 'public', 'securitashomeyoul.pdf');
-
-    // Get the current date and time
     const date = new Date();
-
-    // Format the date as YYYYMMDD
-    const formattedDate = `${date.getFullYear()}${('0' + (date.getMonth() + 1)).slice(-2)}${('0' + date.getDate()).slice(-2)}`;
-
-    // Get the client's name from the form data
-    const clientName = formData.Contract_Name;
-
-    // Create a unique ID using the current timestamp
-    const uniqueId = Date.now();
-
-    // Create the filename
-    const filename = `${formattedDate} - ${clientName} - ${uniqueId}.pdf`;
-
-    const outputPdfPath = path.join(__dirname, 'public', filename);
+    const formattedDate = `${date.getFullYear()}${date.getMonth()+1}${date.getDate()}`;
+    const clientName = formData.Contract_Name; // Assuming the client's name is stored in formData.Contract_Name
+    const uniqueId = Date.now(); // Use the current timestamp as a unique ID
+    const outputPdfPath = path.join(__dirname, 'public', `${formattedDate} - ${clientName} - ${uniqueId}.pdf`);
 
     // Load the PDF document
     const pdfBytes = fs.readFileSync(pdfPath);
@@ -50,9 +38,12 @@ app.post('/submit', async (req, res) => {
     // Fill in the fields in the PDF
     console.log('Filling PDF');
     Object.keys(formData).forEach(field => {
-      const formField = form.getField(field);
-      if (formField) {
-        formField.setText(formData[field]);
+      // Ignore the "sameAsClientData" field
+      if (field !== 'sameAsClientData') {
+        const formField = form.getField(field);
+        if (formField) {
+          formField.setText(formData[field]);
+        }
       }
     });
 
@@ -65,7 +56,7 @@ app.post('/submit', async (req, res) => {
     // Send the filled PDF in the response
     console.log('Sending response');
     res.contentType('application/pdf');
-    res.setHeader('Content-Disposition', `attachment; filename=${filename}`); // Include the filename in the response headers
+    res.setHeader('Content-Disposition', `attachment; filename="${path.basename(outputPdfPath)}"`);
     res.sendFile(outputPdfPath);
   } catch (err) {
     console.error('An error occurred:', err);
@@ -76,3 +67,4 @@ app.post('/submit', async (req, res) => {
 app.listen(3000, () => {
   console.log('Server is running on port 3000');
 });
+// hello git ?
