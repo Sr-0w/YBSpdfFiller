@@ -17,7 +17,7 @@ app.post('/submit', async (req, res) => {
     const formData = req.body;
 
     // Read the PDF file
-    const pdfBuffer = fs.readFileSync('/public/securitashomeyoul.pdf');
+    const pdfBuffer = fs.readFileSync('./public/securitashomeyoul.pdf');
 
     // Fill in the fields in the PDF
     const filledPdf = await pdfFillForm.write(pdfBuffer, formData, { save: 'pdf' });
