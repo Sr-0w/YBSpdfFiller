@@ -5,6 +5,11 @@ const pdfFillForm = require('pdf-fill-form');
 
 const app = express();
 app.use(bodyParser.json());
+app.use(express.static('public'));
+
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/public/index.html');
+});
 
 app.post('/pdf', async (req, res) => {
   try {
@@ -17,7 +22,7 @@ app.post('/pdf', async (req, res) => {
     }, {});
 
     // Read the PDF file
-    const pdfBuffer = fs.readFileSync('public/securitashomeyoul.pdf');
+    const pdfBuffer = fs.readFileSync('path/to/your/pdf');
 
     // Fill in the fields in the PDF
     const filledPdf = await pdfFillForm.write(pdfBuffer, fields, { save: 'pdf' });
