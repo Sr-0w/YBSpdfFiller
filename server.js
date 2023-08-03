@@ -11,21 +11,16 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/index.html');
 });
 
-app.post('/pdf', async (req, res) => {
+app.post('/submit', async (req, res) => {
   try {
-    // Read the readFields.txt file and parse the field names and values
-    const readFields = fs.readFileSync('public/readFields.txt', 'utf8');
-    const fields = readFields.split('\n').reduce((obj, line) => {
-      const [name, value] = line.split('=');
-      obj[name] = value;
-      return obj;
-    }, {});
+    // Use the form data to fill the PDF
+    const formData = req.body;
 
     // Read the PDF file
     const pdfBuffer = fs.readFileSync('path/to/your/pdf');
 
     // Fill in the fields in the PDF
-    const filledPdf = await pdfFillForm.write(pdfBuffer, fields, { save: 'pdf' });
+    const filledPdf = await pdfFillForm.write(pdfBuffer, formData, { save: 'pdf' });
 
     // Send the filled PDF in the response
     res.contentType('application/pdf');
