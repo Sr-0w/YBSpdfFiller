@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
-const HummusRecipe = require('hummus-recipe'); // Add this line
+const { PDFDocument } = require('pdf-lib'); // Add this line
 
 const app = express();
 app.use(bodyParser.json());
@@ -24,20 +24,30 @@ app.post('/submit', async (req, res) => {
     const pdfPath = path.join(__dirname, 'public', 'securitashomeyoul.pdf');
     const outputPdfPath = path.join(__dirname, 'public', 'filledPdf.pdf');
 
-    // Create a new HummusRecipe instance
-    const pdfDoc = new HummusRecipe(pdfPath, outputPdfPath);
+    // Load the PDF document
+    const pdfBytes = fs.readFileSync(pdfPath);
+    const pdfDoc = await PDFDocument.load(pdfBytes);
+
+    // Get the form of the document
+    const form = pdfDoc.getForm();
 
     // Fill in the fields in the PDF
     console.log('Filling PDF');
     Object.keys(formData).forEach(field => {
-      pdfDoc
-        .editPage(1) // Edit the first page
-        .text(formData[field], 'form.' + field) // Fill the form field
-        .endPage();
+      const formField = form.getField(field);
+      if (formField) {
+        formField.setText(formData[field]);
+      }
     });
 
-    // End the PDF editing
-    pdfDoc.endPDF();
+    // Flatten the form fields so they are no longer editable
+    form.flatten();
+
+    // Save the PDF document
+    const filledPdfBytes = await pdfDoc.save();
+
+    // Write the filled PDF to a file
+    fs.writeFileSync(outputPdfPath, filledPdfBytes);
 
     // Send the filled PDF in the response
     console.log('Sending response');
