@@ -3,21 +3,6 @@ document.getElementById('securitasForm').addEventListener('submit', function(eve
 
     var formData = new FormData(event.target);
 
-    // Get the client's name from the form data
-    var clientName = formData.get('Contract_Name');
-
-    // Get the current date and time
-    var date = new Date();
-
-    // Format the date as YYYYMMDD
-    var formattedDate = date.getFullYear() + ('0' + (date.getMonth() + 1)).slice(-2) + ('0' + date.getDate()).slice(-2);
-
-    // Create a unique ID using the current timestamp
-    var uniqueId = Date.now();
-
-    // Create the filename
-    var filename = `${formattedDate} - ${clientName} - ${uniqueId}.pdf`;
-
     console.log('Sending POST request');
     fetch('/submit', {
         method: 'POST',
@@ -30,9 +15,13 @@ document.getElementById('securitasForm').addEventListener('submit', function(eve
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-        return response.blob(); // Convert the response data to a Blob
+        // Get the filename from the response headers
+        const contentDisposition = response.headers.get('Content-Disposition');
+        const filename = contentDisposition.split('=')[1];
+
+        return response.blob().then(blob => ({ blob, filename }));
       })
-      .then(blob => {
+      .then(({ blob, filename }) => {
         const url = URL.createObjectURL(blob); // Create a URL for the Blob
 
         // Create a link element
@@ -53,4 +42,3 @@ document.getElementById('securitasForm').addEventListener('submit', function(eve
         console.error('Error:', error);
       });
 });
-
