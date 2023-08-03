@@ -40,9 +40,6 @@ app.post('/submit', async (req, res) => {
       }
     });
 
-    // Flatten the form fields so they are no longer editable
-    form.flatten();
-
     // Save the PDF document
     const filledPdfBytes = await pdfDoc.save();
 
