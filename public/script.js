@@ -3,6 +3,19 @@ document.getElementById('securitasForm').addEventListener('submit', function(eve
 
     var formData = new FormData(event.target);
 
+    // If the "Same as client data" checkbox is checked, copy the client data to the installation data
+    if (document.getElementById('sameAsClientData').checked) {
+        formData.set('Installation_Name', formData.get('Contract_Name'));
+        formData.set('Installation_FirstName', formData.get('Contract_FirstName'));
+        formData.set('Installation_Email', formData.get('Contract_Email'));
+        formData.set('Installation_Street', formData.get('Contract_address'));
+        formData.set('Installation_StreetNr', formData.get('Contract_StreetNr'));
+        formData.set('Installation_PostalCode', formData.get('Contract_PostalCode'));
+        formData.set('Installation_City', formData.get('Contract_City'));
+        formData.set('Installation_Phone_1', formData.get('Contract_Phone_1'));
+        formData.set('Installation_Phone_2', formData.get('Contract_Phone_2'));
+    }
+
     console.log('Sending POST request');
     fetch('/submit', {
         method: 'POST',
@@ -41,4 +54,9 @@ document.getElementById('securitasForm').addEventListener('submit', function(eve
       .catch(error => {
         console.error('Error:', error);
       });
+});
+
+// Show or hide the installation data fields based on the "Same as client data" checkbox
+document.getElementById('sameAsClientData').addEventListener('change', function(event) {
+    document.getElementById('installationData').style.display = event.target.checked ? 'none' : 'block';
 });
