@@ -22,12 +22,7 @@ app.post('/submit', async (req, res) => {
 
     // Define the PDF file paths
     const pdfPath = path.join(__dirname, 'public', 'securitashomeyoul.pdf');
-    const date = new Date();
-    const formattedDate = `${date.getFullYear()}${date.getMonth()+1}${date.getDate()}`;
-    const clientName = formData.Contract_Name; // Assuming the client's name is stored in formData.Contract_Name
-    const uniqueId = Date.now(); // Use the current timestamp as a unique ID
-    const outputPdfPath = path.join(__dirname, 'public', `${formattedDate} - ${clientName} - ${uniqueId}.pdf`);
-
+    const outputPdfPath = path.join(__dirname, 'public', 'filledPdf.pdf');
 
     // Load the PDF document
     const pdfBytes = fs.readFileSync(pdfPath);
