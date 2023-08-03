@@ -6,19 +6,22 @@ document.getElementById('securitasForm').addEventListener('submit', function(eve
     console.log('Sending POST request');
     fetch('/submit', {
         method: 'POST',
-        body: formData
-    })
-    .then(response => {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
+      .then(response => {
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+          throw new Error('Network response was not ok');
         }
-        return response.text();
-    })
-    .then(filename => {
-        console.log('Received response from server, redirecting to', filename);
-        window.location.href = filename;
-    })
-    .catch(error => {
+        return response.blob(); // Convert the response data to a Blob
+      })
+      .then(blob => {
+        const url = URL.createObjectURL(blob); // Create a URL for the Blob
+        window.open(url, '_blank'); // Open the URL in a new tab or window
+      })
+      .catch(error => {
         console.error('Error:', error);
-    });
+      });
 });
