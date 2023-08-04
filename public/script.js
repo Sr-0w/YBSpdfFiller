@@ -55,11 +55,3 @@ document.getElementById('securitasForm').addEventListener('submit', function(eve
         console.error('Error:', error);
       });
 });
-
-// Show or hide the installation data fields based on the "Same as client data" checkbox
-document.getElementById('sameAsClientData').addEventListener('change', function(event) {
-    const installationDataFields = document.querySelectorAll('.installation-data-field');
-    installationDataFields.forEach(field => {
-        field.disabled = event.target.checked;
-    });
-});
