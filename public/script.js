@@ -56,10 +56,16 @@ document.getElementById('securitasForm').addEventListener('submit', function(eve
       });
 });
 
-// Show or hide the installation data fields based on the "Same as client data" checkbox
-document.getElementById('sameAsClientData').addEventListener('change', function(event) {
-    const installationDataFields = document.querySelectorAll('.installation-data-field');
-    installationDataFields.forEach(field => {
-        field.disabled = event.target.checked;
-    });
+// Add event listener to the checkbox
+document.getElementById('sameAsClientData').addEventListener('change', function() {
+    // Get all the installation address fields
+    const installationFields = document.querySelectorAll('.installation-address-field');
+
+    // If the checkbox is checked, disable the installation address fields
+    if (this.checked) {
+        installationFields.forEach(field => field.setAttribute('disabled', ''));
+    } else {
+        // If the checkbox is not checked, enable the installation address fields
+        installationFields.forEach(field => field.removeAttribute('disabled'));
+    }
 });
