@@ -57,15 +57,19 @@ document.getElementById('securitasForm').addEventListener('submit', function(eve
 });
 
 // Add event listener to the checkbox
-document.getElementById('sameAsClientData').addEventListener('change', function() {
-    // Get all the installation address fields
-    const installationFields = document.querySelectorAll('.installation-address-field');
-
-    // If the checkbox is checked, disable the installation address fields
-    if (this.checked) {
-        installationFields.forEach(field => field.setAttribute('disabled', ''));
-    } else {
-        // If the checkbox is not checked, enable the installation address fields
-        installationFields.forEach(field => field.removeAttribute('disabled'));
-    }
+document.addEventListener('DOMContentLoaded', (event) => {
+    const checkbox = document.getElementById('sameAsClientData');
+    const installationFields = document.querySelectorAll('#Installation_Name, #Installation_FirstName, #Installation_Email, #Installation_Phone_1, #Installation_Phone_2, #Installation_StreetNr, #Installation_Street, #Installation_PostalCode, #Installation_City');
+    
+    checkbox.addEventListener('change', (event) => {
+        if (checkbox.checked) {
+            installationFields.forEach(field => {
+                field.setAttribute('disabled', '');
+            });
+        } else {
+            installationFields.forEach(field => {
+                field.removeAttribute('disabled');
+            });
+        }
+    });
 });
