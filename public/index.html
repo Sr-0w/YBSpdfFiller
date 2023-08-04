@@ -148,12 +148,6 @@
                                         <label class="form-check-label" for="sameAsClientData">
                                             Same as client data
                                         </label>
-                                        <script>// Show or hide the installation data fields based on the "Same as client data" checkbox
-                                            document.getElementById('sameAsClientData').addEventListener('change', function(event) {
-                                                const installationDataFields = document.querySelectorAll('.installation-data-field');
-                                                installationDataFields.forEach(field => {
-                                                    field.disabled = event.target.checked;
-                                                });</script>
                                     </div>
                                     <div class="block-content">
                                         <!-- Installation Address Fields -->
