@@ -18,7 +18,11 @@ app.post('/submit', async (req, res) => {
     console.log('Received POST request to /submit');
 
     // Use the form data to fill the PDF
-    const formData = req.body;
+    
+// Load the component mapping
+const componentMappingPath = path.join(__dirname, 'component_mapping.json');
+const componentMapping = JSON.parse(fs.readFileSync(componentMappingPath, 'utf-8'));
+const formData = req.body;
     console.log('Form data:', formData);
 
     // Define the PDF file paths
