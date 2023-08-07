@@ -36,6 +36,19 @@ app.post('/submit', async (req, res) => {
     const form = pdfDoc.getForm();
 
     // Fill in the fields in the PDF
+// Handle the new dropdown and input fields
+formData.elements.forEach(element => {{
+  const componentKey = component_mapping[element.type];
+  if (componentKey) {{
+    const formField = form.getField(componentKey);
+    if (formField) {{
+      // Increment the current value by 1 (or by the provided value if it's an input field)
+      const currentValue = parseInt(formField.getText()) || 0;
+      formField.setText(String(currentValue + 1));
+    }}
+  }}
+}});
+
     console.log('Filling PDF');
     Object.keys(formData).forEach(field => {
       // Ignore the "sameAsClientData" field
