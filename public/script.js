@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 });
 
-    document.getElementById('securitasForm').addEventListener('submit', function(event) {
+document.getElementById('securitasForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
     var formData = new FormData(event.target);
@@ -39,17 +39,25 @@ document.addEventListener('DOMContentLoaded', function() {
     fetch('component_mapping.json')
         .then(response => response.json())
         .then(componentsData => {
+
+            // Aggregate components from the dropdown list and set them in formData
+            const componentListItems = document.querySelectorAll('#addedComponentsList li');
+            componentListItems.forEach(item => {
+                const componentName = item.childNodes[0].nodeValue.trim();
+                const componentKey = componentsData[componentName];
+                if (formData.has(componentKey)) {
+                    formData.set(componentKey, (parseInt(formData.get(componentKey), 10) + 1).toString());
+                } else {
+                    formData.set(componentKey, '1');
+                }
+            });
+
             const formDataObject = Object.fromEntries(formData);
             const mappedData = {};
 
             for (const key in formDataObject) {
                 const value = formDataObject[key];
-                // If the key exists in componentsData, use its corresponding value as the new key
-                if (componentsData[key]) {
-                    mappedData[componentsData[key]] = value;
-                } else {
-                    mappedData[key] = value;  // Otherwise, use the original key
-                }
+                mappedData[key] = value;
             }
 
             console.log('Sending POST request');
