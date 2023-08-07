@@ -1,18 +1,20 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Load component mapping data
-    fetch('component_mapping.json')
-        .then(response => response.json())
-        .then(componentsData => {
-            // Populate the components dropdown using the component mapping data
-            const componentsDropdown = document.getElementById('componentsDropdown');
-            for (const component in componentsData) {
-                const option = document.createElement('option');
-                option.value = component;
-                option.textContent = component;
-                componentsDropdown.appendChild(option);
-            }
-        });
-});
+let componentsData = {};
+
+// Load component mapping data immediately when the script runs
+fetch('component_mapping.json')
+    .then(response => response.json())
+    .then(data => {
+        componentsData = data;
+
+        // Populate the components dropdown using the component mapping data
+        const componentsDropdown = document.getElementById('componentsDropdown');
+        for (const component in componentsData) {
+            const option = document.createElement('option');
+            option.value = component;
+            option.textContent = component;
+            componentsDropdown.appendChild(option);
+        }
+    });
 
 document.getElementById('securitasForm').addEventListener('submit', function(event) {
     event.preventDefault();
@@ -32,58 +34,71 @@ document.getElementById('securitasForm').addEventListener('submit', function(eve
         formData.set('Installation_Phone_2', formData.get('Contract_Phone_2'));
     }
 
-    // Map the form data using the component mapping data
-    fetch('component_mapping.json')
-        .then(response => response.json())
-        .then(componentsData => {
-            const mappedData = {};
-            for (const [key, value] of formData.entries()) {
-                if (componentsData[key]) {
-                    mappedData[componentsData[key]] = value;
-                } else {
-                    mappedData[key] = value;
-                }
-            }
+    const mappedData = {};
+    for (const [key, value] of formData.entries()) {
+        if (componentsData[key]) {
+            mappedData[componentsData[key]] = value;
+        } else {
+            mappedData[key] = value;
+        }
+    }
 
-            console.log('Sending POST request');
-            return fetch('/submit', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(mappedData)
-            });
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            // Get the filename from the response headers
-            const contentDisposition = response.headers.get('Content-Disposition');
-            const filename = contentDisposition.split('=')[1];
+    // Aggregate components from the dropdown list
+    const componentTally = {};
+    const componentListItems = document.querySelectorAll('#addedComponentsList li');
+    componentListItems.forEach(item => {
+        const componentName = item.childNodes[0].nodeValue.trim();
+        const componentKey = componentsData[componentName];
+        if (componentTally[componentKey]) {
+            componentTally[componentKey]++;
+        } else {
+            componentTally[componentKey] = 1;
+        }
+    });
 
-            return response.blob().then(blob => ({ blob, filename }));
-        })
-        .then(({ blob, filename }) => {
-            const url = URL.createObjectURL(blob); // Create a URL for the Blob
+    // Add the aggregated component data to the POST data
+    for (const component in componentTally) {
+        mappedData[component] = componentTally[component];
+    }
 
-            // Create a link element
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = filename; // Set the download filename
+    console.log('Sending POST request');
+    fetch('/submit', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(mappedData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        // Get the filename from the response headers
+        const contentDisposition = response.headers.get('Content-Disposition');
+        const filename = contentDisposition.split('=')[1];
 
-            // Append the link to the body
-            document.body.appendChild(link);
+        return response.blob().then(blob => ({ blob, filename }));
+    })
+    .then(({ blob, filename }) => {
+        const url = URL.createObjectURL(blob); // Create a URL for the Blob
 
-            // Simulate a click on the link
-            link.click();
+        // Create a link element
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename; // Set the download filename
 
-            // Remove the link from the body
-            document.body.removeChild(link);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+        // Append the link to the body
+        document.body.appendChild(link);
+
+        // Simulate a click on the link
+        link.click();
+
+        // Remove the link from the body
+        document.body.removeChild(link);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
 });
 
 // Add event listener to the checkbox
