@@ -1,25 +1,22 @@
 let componentsData = {};
 
-// Load component mapping data immediately when the script runs
-fetch('component_mapping.json')
-    .then(response => response.json())
-    .then(componentsData => {
-        const mappedData = {};
-        for (const [key, value] of formData.entries()) {
-            const stringKey = String(key); // Convert key to string explicitly
-            
-            if (componentsData[stringKey]) {
-                const mappedKey = componentsData[stringKey];
-                if (mappedData[mappedKey]) {
-                    // If the component is already present, add to its count
-                    mappedData[mappedKey] += parseInt(value, 10);
-                } else {
-                    mappedData[mappedKey] = parseInt(value, 10);
-                }
-            } else {
-                mappedData[stringKey] = value; // Keep non-component data as strings
+// Fetch and populate the dropdown upon page load
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('component_mapping.json')
+        .then(response => response.json())
+        .then(data => {
+            componentsData = data;
+
+            // Populate the dropdown
+            const componentsDropdown = document.getElementById('componentsDropdown');
+            for (const component in componentsData) {
+                const option = document.createElement('option');
+                option.value = component;
+                option.textContent = component;
+                componentsDropdown.appendChild(option);
             }
-        }
+        });
+});
 
 document.getElementById('securitasForm').addEventListener('submit', function(event) {
     event.preventDefault();
@@ -39,16 +36,19 @@ document.getElementById('securitasForm').addEventListener('submit', function(eve
         formData.set('Installation_Phone_2', formData.get('Contract_Phone_2'));
     }
 
+    const formDataObject = Object.fromEntries(formData);
+
     const mappedData = {};
-    for (const [key, value] of formData.entries()) {
+    for (const key in formDataObject) {
+        const value = formDataObject[key];
         if (componentsData[key]) {
-            mappedData[componentsData[key]] = value;
+            const mappedKey = componentsData[key];
+            mappedData[mappedKey] = value;
         } else {
             mappedData[key] = value;
         }
     }
 
-    // Aggregate components from the dropdown list
     const componentTally = {};
     const componentListItems = document.querySelectorAll('#addedComponentsList li');
     componentListItems.forEach(item => {
@@ -61,9 +61,8 @@ document.getElementById('securitasForm').addEventListener('submit', function(eve
         }
     });
 
-    // Add the aggregated component data to the POST data
     for (const component in componentTally) {
-        mappedData[component] = componentTally[component].toString(); // Convert to string here
+        mappedData[component] = componentTally[component].toString();
     }
 
     console.log('Sending POST request');
@@ -78,27 +77,17 @@ document.getElementById('securitasForm').addEventListener('submit', function(eve
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
-        // Get the filename from the response headers
         const contentDisposition = response.headers.get('Content-Disposition');
         const filename = contentDisposition.split('=')[1];
-
         return response.blob().then(blob => ({ blob, filename }));
     })
     .then(({ blob, filename }) => {
-        const url = URL.createObjectURL(blob); // Create a URL for the Blob
-
-        // Create a link element
+        const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = filename; // Set the download filename
-
-        // Append the link to the body
+        link.download = filename;
         document.body.appendChild(link);
-
-        // Simulate a click on the link
         link.click();
-
-        // Remove the link from the body
         document.body.removeChild(link);
     })
     .catch(error => {
@@ -130,27 +119,20 @@ const addedComponentsList = document.getElementById('addedComponentsList');
 const componentsCount = document.getElementById('componentsCount');
 addComponentBtn.addEventListener('click', function(event) {
     event.preventDefault();
-    const selectedComponent = componentsDropdown.value;
+    const selectedComponent = document.getElementById('componentsDropdown').value;
     const count = parseInt(componentsCount.value, 10);
     if (selectedComponent && count) {
         for (let i = 0; i < count; i++) {
             const listItem = document.createElement('li');
             listItem.textContent = selectedComponent;
-            
-            // Add a space between component name and input field
             const space = document.createTextNode(' ');
             listItem.appendChild(space);
-            
-            // Add an input field for text entry next to the component
             const textInput = document.createElement('input');
             textInput.type = 'text';
             textInput.placeholder = 'Enter text...';
             listItem.appendChild(textInput);
-
             addedComponentsList.appendChild(listItem);
         }
-        
-        // Reset components count input
         componentsCount.value = '';
     }
 });
