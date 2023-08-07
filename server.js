@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
-const { PDFDocument } = require('pdf-lib');
+
 
 const app = express();
 app.use(bodyParser.json());
@@ -13,58 +13,38 @@ app.get('/', (req, res) => {
 });
 
 app.post('/submit', async (req, res) => {
-  try {
-    console.log('Received POST request to /submit');
-
-    // Use the form data to fill the PDF
-    const formData = req.body;
-    console.log('Form data:', formData);
-
-    // Define the PDF file paths
-    const pdfPath = path.join(__dirname, 'public', 'securitashomeyoul.pdf');
-    const date = new Date();
-    const formattedDate = `${date.getFullYear()}${date.getMonth()+1}${date.getDate()}`;
-    const clientName = formData.Contract_Name; // Assuming the client's name is stored in formData.Contract_Name
-    const uniqueId = Date.now(); // Use the current timestamp as a unique ID
-    const outputPdfPath = path.join(__dirname, 'public', `${formattedDate} - ${clientName} - ${uniqueId}.pdf`);
-
-    // Load the PDF document
-    const pdfBytes = fs.readFileSync(pdfPath);
-    const pdfDoc = await PDFDocument.load(pdfBytes);
-
-    // Get the form of the document
-    const form = pdfDoc.getForm();
-
-    // Fill in the fields in the PDF
-    console.log('Filling PDF');
-    Object.keys(formData).forEach(field => {
-      // Ignore the "sameAsClientData" field
-      if (field !== 'sameAsClientData') {
-        const formField = form.getField(field);
-        if (formField) {
-          formField.setText(formData[field]);
+    try {
+        // Extract form data
+        const formData = req.body;
+        
+        // Load the component mapping
+        const componentMapping = JSON.parse(fs.readFileSync('component_mapping.json', 'utf-8'));
+        
+        // Load the PDF template
+        const pdfBytes = fs.readFileSync('template.pdf');
+        const pdfDoc = await PDFDocument.load(pdfBytes);
+        const form = pdfDoc.getForm();
+        
+        // Update client and installation details based on existing logic
+        // ... (this will be based on the existing logic in the server.js content)
+        
+        // Update component fields based on componentMapping
+        for (const component in componentMapping) {
+            if (formData[component]) {
+                const pdfFieldName = componentMapping[component];
+                const field = form.getTextField(pdfFieldName);
+                field.setText(formData[component].toString());
+            }
         }
-      }
-    });
-
-    // Save the PDF document
-    const filledPdfBytes = await pdfDoc.save();
-
-    // Write the filled PDF to a file
-    fs.writeFileSync(outputPdfPath, filledPdfBytes);
-
-    // Send the filled PDF in the response
-    console.log('Sending response');
-    res.contentType('application/pdf');
-    res.setHeader('Content-Disposition', `attachment; filename=${path.basename(outputPdfPath)}`);
-    res.sendFile(outputPdfPath);
-  } catch (err) {
-    console.error('An error occurred:', err);
-    res.status(500).send('An error occurred while processing the PDF.');
-  }
+        
+        // Serialize the PDF to bytes and send it as a response
+        const pdfModifiedBytes = await pdfDoc.save();
+        res.contentType("application/pdf");
+        res.send(pdfModifiedBytes);
+        
+    } catch (error) {
+        console.error("Error updating the PDF:", error);
+        res.status(500).send("Internal Server Error");
+    }
 });
 
-app.listen(3000, () => {
-  console.log('Server is running on port 3000');
-});
-// hello git ?
