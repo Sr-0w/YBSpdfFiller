@@ -88,7 +88,8 @@ for (const component in componentsData) {
 const addComponentBtn = document.getElementById('addComponentBtn');
 const addedComponentsList = document.getElementById('addedComponentsList');
 const componentsCount = document.getElementById('componentsCount');
-addComponentBtn.addEventListener('click', function() {
+addComponentBtn.addEventListener('click', function(event) {
+    event.preventDefault();
     const selectedComponent = componentsDropdown.value;
     const count = parseInt(componentsCount.value, 10);
     if (selectedComponent && count) {
