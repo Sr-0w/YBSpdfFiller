@@ -11,8 +11,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const componentsDropdown = document.getElementById('componentsDropdown');
             for (const component in componentsData) {
                 const option = document.createElement('option');
-                option.value = component.toString();  // Convert component name to string
-                option.textContent = component.toString();  // Convert component name to string
+                option.value = component;  // No need to convert to string, it's already a string
+                option.textContent = component;
                 componentsDropdown.appendChild(option);
             }
         });
@@ -39,8 +39,7 @@ document.getElementById('securitasForm').addEventListener('submit', function(eve
         },
         body: JSON.stringify(formDataObject)  // Send the mapped data
     })
-        })
-        .then(response => {
+    .then(response => {
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -94,20 +93,6 @@ addComponentBtn.addEventListener('click', function(event) {
         for (let i = 0; i < count; i++) {
             const listItem = document.createElement('li');
             listItem.textContent = selectedComponent;
-
-            // Check if a hidden input for this component already exists
-            let hiddenInput = document.querySelector(`input[name="${mappedName}"]`);
-            if (hiddenInput) {
-                // If it exists, increment its value
-                hiddenInput.value = (parseInt(hiddenInput.value, 10) + 1).toString();
-            } else {
-                // Otherwise, create a new hidden input for this component
-                hiddenInput = document.createElement('input');
-                hiddenInput.type = 'hidden';
-                hiddenInput.name = mappedName;
-                hiddenInput.value = '1';
-                document.getElementById('securitasForm').appendChild(hiddenInput);
-            }
 
             addedComponentsList.appendChild(listItem);
         }
