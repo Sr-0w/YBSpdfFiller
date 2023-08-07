@@ -2,7 +2,7 @@
 let componentsMapping = {};
 
 // Fetch component_mapping.json and use it in the script
-fetch('/path_to_component_mapping.json') // Adjust the path accordingly
+fetch('component_mapping.json')
     .then(response => response.json())
     .then(data => {
         componentsMapping = data;
