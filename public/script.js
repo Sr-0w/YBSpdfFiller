@@ -17,28 +17,27 @@ document.getElementById('securitasForm').addEventListener('submit', function(eve
     }
 
     console.log('Sending POST request');
-// Map the components to their corresponding IDs in the PDF form using component_mapping.json
-const componentsMapping = {
-    "Pack de base": "Aantal basispakket",
-    "Incendie et CO (1 dét. fumée, 1 dét. CO et 1 dét chaleur)": "Aantal paquet Fire and CO",
-    // ... (add all mappings from component_mapping.json)
-};
-
-const addedComponents = document.querySelectorAll('#addedComponentsList li input');
-addedComponents.forEach(input => {
-    const componentName = input.previousSibling.textContent.trim();
-    const fieldValue = input.value;
-    if (componentsMapping[componentName]) {
-        formData.set(componentsMapping[componentName], fieldValue);
-    }
-});
-
     fetch('/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(Object.fromEntries(formData)) // Convert formData to JSON
+        
+    // Mapping the added components using component_mapping.json
+    const componentMapping = {
+        "Pack de base": "Aantal basispakket",
+        // ... (include all the mappings from component_mapping.json)
+        "Ouverture de garage": "Aantal Garage Door Opener"
+    };
+    const addedComponents = addedComponentsList.querySelectorAll('li');
+    addedComponents.forEach(item => {
+        const componentName = item.textContent.trim();
+        const componentValue = item.querySelector('input').value;
+        if (componentMapping[componentName]) {
+            formData.set(componentMapping[componentName], componentValue);
+        }
+    });
+body: JSON.stringify(Object.fromEntries(formData)) // Convert formData to JSON
       })
       .then(response => {
         if (!response.ok) {
