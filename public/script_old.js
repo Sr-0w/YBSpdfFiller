@@ -16,15 +16,7 @@ document.getElementById('securitasForm').addEventListener('submit', function(eve
         formData.set('Installation_Phone_2', formData.get('Contract_Phone_2'));
     }
 
-    
-// Add the components and their values to formData
-const addedComponents = document.querySelectorAll('#addedComponentsList li');
-addedComponents.forEach(component => {
-    const componentName = component.textContent.trim();
-    const componentValue = component.querySelector('input').value;
-    formData.set(componentName, componentValue);
-});
-console.log('Sending POST request');
+    console.log('Sending POST request');
     fetch('/submit', {
         method: 'POST',
         headers: {
