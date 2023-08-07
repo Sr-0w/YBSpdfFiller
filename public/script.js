@@ -3,19 +3,16 @@ let componentsData = {};
 // Load component mapping data immediately when the script runs
 fetch('component_mapping.json')
     .then(response => response.json())
-    .then(data => {
-        componentsData = data;
-
-        // Populate the components dropdown using the component mapping data
-        const componentsDropdown = document.getElementById('componentsDropdown');
-        for (const component in componentsData) {
-            const option = document.createElement('option');
-            option.value = component;
-            option.textContent = component;
-            componentsDropdown.appendChild(option);
+    .then(componentsData => {
+        const mappedData = {};
+        for (const [key, value] of formData.entries()) {
+            const stringKey = `${key}`;  // Convert key to string
+            if (componentsData[stringKey]) {
+                mappedData[componentsData[stringKey]] = value;
+            } else {
+                mappedData[stringKey] = value;
+            }
         }
-    });
-
 document.getElementById('securitasForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
