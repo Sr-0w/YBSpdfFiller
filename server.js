@@ -48,11 +48,11 @@ app.post('/submit', async (req, res) => {
       }
     });
 
-    
-// Load the component mapping
-const componentMappingPath = path.join(__dirname, 'component_mapping.json');
-const componentMapping = JSON.parse(fs.readFileSync(componentMappingPath, 'utf-8'));
+    // Load the component mapping
+    const componentMappingPath = path.join(__dirname, 'component_mapping.json');
+    const componentMapping = JSON.parse(fs.readFileSync(componentMappingPath, 'utf-8'));
 
+    
 // Update component fields based on componentMapping and log the process
 for (const component in componentMapping) {
     if (formData[component]) {
@@ -62,7 +62,15 @@ for (const component in componentMapping) {
         field.setText(formData[component].toString());
     }
 }
-// Insert the components update logic here
+// Update component fields based on componentMapping
+    for (const component in componentMapping) {
+        if (formData[component]) {
+            const pdfFieldName = componentMapping[component];
+            const field = form.getTextField(pdfFieldName);
+            field.setText(formData[component].toString());
+        }
+    }
+    // Insert the components update logic here
     // ...
 
     // Save the PDF document
