@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
 const { PDFDocument } = require('pdf-lib');
+const component_mapping = require('./component_mapping.json');
 
 const app = express();
 app.use(bodyParser.json());
@@ -37,7 +38,20 @@ app.post('/submit', async (req, res) => {
 
     // Fill in the fields in the PDF
 // Handle the new dropdown and input fields
-formData.elements.forEach(element => {{
+
+if (formData.elements) {
+  formData.elements.forEach(element => {
+    const componentKey = component_mapping[element.type];
+    if (componentKey) {
+      const formField = form.getField(componentKey);
+      if (formField) {
+        const currentValue = parseInt(formField.getText()) || 0;
+        formField.setText(String(currentValue + 1));
+      }
+    }
+  });
+}
+{
   const componentKey = component_mapping[element.type];
   if (componentKey) {{
     const formField = form.getField(componentKey);
