@@ -20,6 +20,10 @@ app.post('/submit', async (req, res) => {
     // Use the form data to fill the PDF
     const formData = req.body;
     console.log('Form data:', formData);
+// Load the component mapping
+const componentMappingPath = path.join(__dirname, 'component_mapping.json');
+const componentMapping = JSON.parse(fs.readFileSync(componentMappingPath, 'utf-8'));
+
 
     // Define the PDF file paths
     const pdfPath = path.join(__dirname, 'public', 'securitashomeyoul.pdf');
