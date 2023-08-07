@@ -1,165 +1,243 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Securitas PDF Filler</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="style.css" rel="stylesheet">
-</head>
-<body class="admin">
-    <div class="page-wrapper">
-        <div class="main" id="main">
-            <div class="header">
-                <div class="top-header col-12 d-flex justify-content-end px-0">
-                    <div class="title">
-                        <h1></h1>
-                    </div>
-                </div>
-            </div>
-            <div class="page-content">
-                <div class="form-container">
-                    <form id="securitasForm">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="form-tab">
-                                    <h2><i class="far fa-address-card mr-2 text-red"></i>Client Information</h2>
-                                    <div class="block-content">
-                                        <!-- Client Information Fields -->
-                                        <!-- Name -->
-                                        <div class="form-row">
-                                            <div class="col">
-                                                <label for="Contract_Name">Name:</label>
-                                                <input type="text" id="Contract_Name" name="Contract_Name" class="form-control">
-                                            </div>
-                                            <div class="col">
-                                                <label for="Contract_FirstName">First Name:</label>
-                                                <input type="text" id="Contract_FirstName" name="Contract_FirstName" class="form-control">
-                                            </div>
-                                        </div>
-                                        <!-- Email and Phone -->
-                                        <div class="form-row">
-                                            <div class="col">
-                                                <label for="Contract_Email">Email:</label>
-                                                <input type="email" id="Contract_Email" name="Contract_Email" class="form-control">
-                                            </div>
-                                            <div class="col">
-                                                <label for="Contract_Phone_1">Phone 1:</label>
-                                                <input type="tel" id="Contract_Phone_1" name="Contract_Phone_1" class="form-control">
-                                            </div>
-                                            <div class="col">
-                                                <label for="Contract_Phone_2">Phone 2:</label>
-                                                <input type="tel" id="Contract_Phone_2" name="Contract_Phone_2" class="form-control">
-                                            </div>
-                                        </div>
-                                        <!-- Address -->
-                                        <div class="form-row">
-                                            <div class="col">
-                                                <label for="Contract_StreetNr">Street Number:</label>
-                                                <input type="text" id="Contract_StreetNr" name="Contract_StreetNr" class="form-control">
-                                            </div>
-                                            <div class="col">
-                                                <label for="Contract_address">Address:</label>
-                                                <input type="text" id="Contract_address" name="Contract_address" class="form-control">
-                                            </div>
-                                        </div>
-                                        <!-- Postal Code and City -->
-                                        <div class="form-row">
-                                            <div class="col">
-                                                <label for="Contract_PostalCode">Postal Code:</label>
-                                                <input type="text" id="Contract_PostalCode" name="Contract_PostalCode" class="form-control">
-                                            </div>
-                                            <div class="col">
-                                                <label for="Contract_City">City:</label>
-                                                <input type="text" id="Contract_City" name="Contract_City" class="form-control">
-                                            </div>
-                                        </div>
-                                        <!-- National ID and Securitas ID -->
-                                        <div class="form-row">
-                                            <div class="col">
-                                                <label for="Contract_NationalID">National ID:</label>
-                                                <input type="text" id="Contract_NationalID" name="Contract_NationalID" class="form-control">
-                                            </div>
-                                            <div class="col">
-                                                <label for="Contract_SecuritasID">Securitas ID:</label>
-                                                <input type="text" id="Contract_SecuritasID" name="Contract_SecuritasID" class="form-control">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-tab" id="InstallationFields">
-                                    <h2><i class="fas fa-mobile-alt mr-2 text-red"></i>Installation Address</h2>
-                                    <!-- Checkbox -->
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="sameAsClientData">
-                                        <label class="form-check-label" for="sameAsClientData">
-                                            Same as client data
-                                        </label>
-                                    </div>
-                                    <div class="block-content">
-                                        <!-- Installation Address Fields -->
-                                        <!-- Name -->
-                                        <div class="form-row">
-                                            <div class="col">
-                                                <label for="Installation_Name">Name:</label>
-                                                <input type="text" id="Installation_Name" name="Installation_Name" class="form-control">
-                                            </div>
-                                            <div class="col">
-                                                <label for="Installation_FirstName">First Name:</label>
-                                                <input type="text" id="Installation_FirstName" name="Installation_FirstName" class="form-control">
-                                            </div>
-                                        </div>
-                                        <!-- Email and Phone -->
-                                        <div class="form-row">
-                                            <div class="col">
-                                                <label for="Installation_Email">Email:</label>
-                                                <input type="email" id="Installation_Email" name="Installation_Email" class="form-control">
-                                            </div>
-                                            <div class="col">
-                                                <label for="Installation_Phone_1">Phone 1:</label>
-                                                <input type="tel" id="Installation_Phone_1" name="Installation_Phone_1" class="form-control">
-                                            </div>
-                                            <div class="col">
-                                                <label for="Installation_Phone_2">Phone 2:</label>
-                                                <input type="tel" id="Installation_Phone_2" name="Installation_Phone_2" class="form-control">
-                                            </div>
-                                        </div>
-                                        <!-- Address -->
-                                        <div class="form-row">
-                                            <div class="col">
-                                                <label for="Installation_StreetNr">Street Number:</label>
-                                                <input type="text" id="Installation_StreetNr" name="Installation_StreetNr" class="form-control">
-                                            </div>
-                                            <div class="col">
-                                                <label for="Installation_Street">Street:</label>
-                                                <input type="text" id="Installation_Street" name="Installation_Street" class="form-control">
-                                            </div>
-                                        </div>
-                                        <!-- Postal Code and City -->
-                                        <div class="form-row">
-                                            <div class="col">
-                                                <label for="Installation_PostalCode">Postal Code:</label>
-                                                <input type="text" id="Installation_PostalCode" name="Installation_PostalCode" class="form-control">
-                                            </div>
-                                            <div class="col">
-                                                <label for="Installation_City">City:</label>
-                                                <input type="text" id="Installation_City" name="Installation_City" class="form-control">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="text-center mt-3">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+   Securitas PDF Filler
+  </title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="style.css" rel="stylesheet"/>
+ </head>
+ <body class="admin">
+  <div class="page-wrapper">
+   <div class="main" id="main">
+    <div class="header">
+     <div class="top-header col-12 d-flex justify-content-end px-0">
+      <div class="title">
+       <h1>
+       </h1>
+      </div>
+     </div>
     </div>
-    <script src="script.js"></script>
-</body>
+    <div class="page-content">
+     <div class="form-container">
+      <form id="securitasForm">
+       <div class="row">
+        <div class="col-lg-6">
+         <div class="form-tab">
+          <h2>
+           <i class="far fa-address-card mr-2 text-red">
+           </i>
+           Client Information
+          </h2>
+          <div class="block-content">
+           <!-- Client Information Fields -->
+           <!-- Name -->
+           <div class="form-row">
+            <div class="col">
+             <label for="Contract_Name">
+              Name:
+             </label>
+             <input class="form-control" id="Contract_Name" name="Contract_Name" type="text"/>
+            </div>
+            <div class="col">
+             <label for="Contract_FirstName">
+              First Name:
+             </label>
+             <input class="form-control" id="Contract_FirstName" name="Contract_FirstName" type="text"/>
+            </div>
+           </div>
+           <!-- Email and Phone -->
+           <div class="form-row">
+            <div class="col">
+             <label for="Contract_Email">
+              Email:
+             </label>
+             <input class="form-control" id="Contract_Email" name="Contract_Email" type="email"/>
+            </div>
+            <div class="col">
+             <label for="Contract_Phone_1">
+              Phone 1:
+             </label>
+             <input class="form-control" id="Contract_Phone_1" name="Contract_Phone_1" type="tel"/>
+            </div>
+            <div class="col">
+             <label for="Contract_Phone_2">
+              Phone 2:
+             </label>
+             <input class="form-control" id="Contract_Phone_2" name="Contract_Phone_2" type="tel"/>
+            </div>
+           </div>
+           <!-- Address -->
+           <div class="form-row">
+            <div class="col">
+             <label for="Contract_StreetNr">
+              Street Number:
+             </label>
+             <input class="form-control" id="Contract_StreetNr" name="Contract_StreetNr" type="text"/>
+            </div>
+            <div class="col">
+             <label for="Contract_address">
+              Address:
+             </label>
+             <input class="form-control" id="Contract_address" name="Contract_address" type="text"/>
+            </div>
+           </div>
+           <!-- Postal Code and City -->
+           <div class="form-row">
+            <div class="col">
+             <label for="Contract_PostalCode">
+              Postal Code:
+             </label>
+             <input class="form-control" id="Contract_PostalCode" name="Contract_PostalCode" type="text"/>
+            </div>
+            <div class="col">
+             <label for="Contract_City">
+              City:
+             </label>
+             <input class="form-control" id="Contract_City" name="Contract_City" type="text"/>
+            </div>
+           </div>
+           <!-- National ID and Securitas ID -->
+           <div class="form-row">
+            <div class="col">
+             <label for="Contract_NationalID">
+              National ID:
+             </label>
+             <input class="form-control" id="Contract_NationalID" name="Contract_NationalID" type="text"/>
+            </div>
+            <div class="col">
+             <label for="Contract_SecuritasID">
+              Securitas ID:
+             </label>
+             <input class="form-control" id="Contract_SecuritasID" name="Contract_SecuritasID" type="text"/>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div class="col-lg-6">
+         <div class="form-tab" id="InstallationFields">
+          <h2>
+           <i class="fas fa-mobile-alt mr-2 text-red">
+           </i>
+           Installation Address
+          </h2>
+          <!-- Checkbox -->
+          <div class="form-check">
+           <input class="form-check-input" id="sameAsClientData" type="checkbox" value=""/>
+           <label class="form-check-label" for="sameAsClientData">
+            Same as client data
+           </label>
+          </div>
+          <div class="block-content">
+           <!-- Installation Address Fields -->
+           <!-- Name -->
+           <div class="form-row">
+            <div class="col">
+             <label for="Installation_Name">
+              Name:
+             </label>
+             <input class="form-control" id="Installation_Name" name="Installation_Name" type="text"/>
+            </div>
+            <div class="col">
+             <label for="Installation_FirstName">
+              First Name:
+             </label>
+             <input class="form-control" id="Installation_FirstName" name="Installation_FirstName" type="text"/>
+            </div>
+           </div>
+           <!-- Email and Phone -->
+           <div class="form-row">
+            <div class="col">
+             <label for="Installation_Email">
+              Email:
+             </label>
+             <input class="form-control" id="Installation_Email" name="Installation_Email" type="email"/>
+            </div>
+            <div class="col">
+             <label for="Installation_Phone_1">
+              Phone 1:
+             </label>
+             <input class="form-control" id="Installation_Phone_1" name="Installation_Phone_1" type="tel"/>
+            </div>
+            <div class="col">
+             <label for="Installation_Phone_2">
+              Phone 2:
+             </label>
+             <input class="form-control" id="Installation_Phone_2" name="Installation_Phone_2" type="tel"/>
+            </div>
+           </div>
+           <!-- Address -->
+           <div class="form-row">
+            <div class="col">
+             <label for="Installation_StreetNr">
+              Street Number:
+             </label>
+             <input class="form-control" id="Installation_StreetNr" name="Installation_StreetNr" type="text"/>
+            </div>
+            <div class="col">
+             <label for="Installation_Street">
+              Street:
+             </label>
+             <input class="form-control" id="Installation_Street" name="Installation_Street" type="text"/>
+            </div>
+           </div>
+           <!-- Postal Code and City -->
+           <div class="form-row">
+            <div class="col">
+             <label for="Installation_PostalCode">
+              Postal Code:
+             </label>
+             <input class="form-control" id="Installation_PostalCode" name="Installation_PostalCode" type="text"/>
+            </div>
+            <div class="col">
+             <label for="Installation_City">
+              City:
+             </label>
+             <input class="form-control" id="Installation_City" name="Installation_City" type="text"/>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+       <div class="row mt-3">
+        <div class="col-lg-6">
+         <label>
+          Choisir un élément:
+         </label>
+         <select class="form-control" id="elementSelector">
+          <option disabled="" selected="" value="">
+           Sélectionnez un élément
+          </option>
+          <option value="Pack de base">
+           Pack de base
+          </option>
+          <option value="Clavier">
+           Clavier
+          </option>
+          <!-- Additional options can be added here -->
+         </select>
+        </div>
+        <div class="col-lg-6 d-flex align-items-end">
+         <button class="btn btn-primary" id="addElement" type="button">
+          +
+         </button>
+        </div>
+       </div>
+       <div class="text-center mt-3">
+        <button class="btn btn-primary" type="submit">
+         Submit
+        </button>
+       </div>
+      </form>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script src="script.js">
+  </script>
+ </body>
 </html>

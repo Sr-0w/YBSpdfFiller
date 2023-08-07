@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
 const { PDFDocument } = require('pdf-lib');
+const componentMapping = require('./component_mapping.json');
+
 
 const app = express();
 app.use(bodyParser.json());
@@ -36,7 +38,16 @@ app.post('/submit', async (req, res) => {
     const form = pdfDoc.getForm();
 
     // Fill in the fields in the PDF
-    console.log('Filling PDF');
+    
+    // Handle elements mapping
+    if (formData.elements) {
+      formData.elements.forEach(element => {
+        if (componentMapping[element.name]) {
+          formData[componentMapping[element.name]] = element.value;
+        }
+      });
+    }
+console.log('Filling PDF');
     Object.keys(formData).forEach(field => {
       // Ignore the "sameAsClientData" field
       if (field !== 'sameAsClientData') {
