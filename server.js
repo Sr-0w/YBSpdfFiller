@@ -18,11 +18,7 @@ app.post('/submit', async (req, res) => {
     console.log('Received POST request to /submit');
 
     // Use the form data to fill the PDF
-    
-// Load the component mapping
-const componentMappingPath = path.join(__dirname, 'component_mapping.json');
-const componentMapping = JSON.parse(fs.readFileSync(componentMappingPath, 'utf-8'));
-const formData = req.body;
+    const formData = req.body;
     console.log('Form data:', formData);
 
     // Define the PDF file paths
@@ -53,6 +49,10 @@ const formData = req.body;
     });
 
     
+// Load the component mapping
+const componentMappingPath = path.join(__dirname, 'component_mapping.json');
+const componentMapping = JSON.parse(fs.readFileSync(componentMappingPath, 'utf-8'));
+
 // Update component fields based on componentMapping
 for (const component in componentMapping) {
     if (formData[component]) {
@@ -84,4 +84,3 @@ for (const component in componentMapping) {
 app.listen(3000, () => {
   console.log('Server is running on port 3000');
 });
-// hello git ?
