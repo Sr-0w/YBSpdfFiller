@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 });
 
-document.getElementById('securitasForm').addEventListener('submit', function(event) {
+    document.getElementById('securitasForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
     var formData = new FormData(event.target);
@@ -36,44 +36,32 @@ document.getElementById('securitasForm').addEventListener('submit', function(eve
         formData.set('Installation_Phone_2', formData.get('Contract_Phone_2'));
     }
 
-    const formDataObject = Object.fromEntries(formData);
+    fetch('component_mapping.json')
+        .then(response => response.json())
+        .then(componentsData => {
+            const formDataObject = Object.fromEntries(formData);
+            const mappedData = {};
 
-    const mappedData = {};
-    for (const key in formDataObject) {
-        const value = formDataObject[key];
-        if (componentsData[key]) {
-            const mappedKey = componentsData[key];
-            mappedData[mappedKey] = value; // Use the mapped key here
-        } else {
-            mappedData[key] = value;
-        }
-    }
+            for (const key in formDataObject) {
+                const value = formDataObject[key];
+                // If the key exists in componentsData, use its corresponding value as the new key
+                if (componentsData[key]) {
+                    mappedData[componentsData[key]] = value;
+                } else {
+                    mappedData[key] = value;  // Otherwise, use the original key
+                }
+            }
 
-    const componentTally = {};
-    const componentListItems = document.querySelectorAll('#addedComponentsList li');
-    componentListItems.forEach(item => {
-        const componentName = item.childNodes[0].nodeValue.trim();
-        const componentKey = componentsData[componentName];
-        if (componentTally[componentKey]) {
-            componentTally[componentKey]++;
-        } else {
-            componentTally[componentKey] = 1;
-        }
-    });
-
-    for (const component in componentTally) {
-        mappedData[component] = componentTally[component].toString();
-    }
-
-    console.log('Sending POST request');
-    fetch('/submit', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(mappedData)
-    })
-    .then(response => {
+            console.log('Sending POST request');
+            return fetch('/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(mappedData)  // Send the mapped data
+            });
+        })
+        .then(response => {
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
