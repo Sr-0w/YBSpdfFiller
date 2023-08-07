@@ -20,10 +20,10 @@ fetch('component_mapping.json')
         console.error('Error fetching component_mapping.json:', error);
     });
 
-document.getElementById('securitasForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    var formData = new FormData(event.target);
+    document.getElementById('securitasForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+    
+        var formData = new FormData(event.target);
 
     // If the "Same as client data" checkbox is checked, copy the client data to the installation data
     if (document.getElementById('sameAsClientData').checked) {
@@ -42,7 +42,7 @@ document.getElementById('securitasForm').addEventListener('submit', function(eve
     const addedComponents = document.getElementById('addedComponentsList').children;
     for (let i = 0; i < addedComponents.length; i++) {
         const component = addedComponents[i];
-        const componentName = component.getAttribute('data-component-name');  // Get component name from data attribute
+        const componentName = component.textContent.trim();  // Get component name from the displayed text
         const inputValue = component.querySelector('input').value;
         const mappedName = componentsMapping[componentName];
         if (mappedName) {
