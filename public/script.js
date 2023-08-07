@@ -53,21 +53,22 @@ document.getElementById('securitasForm').addEventListener('submit', function(eve
             });
 
             const formDataObject = Object.fromEntries(formData);
-            const mappedData = {};
 
-            for (const key in formDataObject) {
-                const value = formDataObject[key];
-                mappedData[key] = value;
-            }
+    // Convert component names using the mapping
+    for (let key in formDataObject) {
+        if (componentsData[key]) {
+            formDataObject[componentsData[key]] = formDataObject[key];
+            delete formDataObject[key];
+        }
+    }
 
-            console.log('Sending POST request');
-            return fetch('/submit', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(mappedData)  // Send the mapped data
-            });
+    fetch('/submit', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formDataObject)  // Send the mapped data
+    })
         })
         .then(response => {
         if (!response.ok) {
@@ -117,16 +118,22 @@ addComponentBtn.addEventListener('click', function(event) {
     event.preventDefault();
     const selectedComponent = document.getElementById('componentsDropdown').value;
     const count = parseInt(componentsCount.value, 10);
+    const mappedName = componentsData[selectedComponent];
     if (selectedComponent && count) {
         for (let i = 0; i < count; i++) {
             const listItem = document.createElement('li');
             listItem.textContent = selectedComponent;
+            
+            // Create a hidden input field for each component and append it to the form
+            const hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = mappedName;
+            hiddenInput.value = "1"; // The value is '1' because each input represents one component
+            document.getElementById('securitasForm').appendChild(hiddenInput);
+
+            // Add a space and visual representation for the component in the list
             const space = document.createTextNode(' ');
             listItem.appendChild(space);
-            const textInput = document.createElement('input');
-            textInput.type = 'text';
-            textInput.placeholder = 'Enter text...';
-            listItem.appendChild(textInput);
             addedComponentsList.appendChild(listItem);
         }
         componentsCount.value = '';
