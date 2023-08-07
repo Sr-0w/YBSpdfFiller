@@ -38,17 +38,16 @@ fetch('component_mapping.json')
         formData.set('Installation_Phone_2', formData.get('Contract_Phone_2'));
     }
 
-    // Loop through each added component and add it to formData
     const addedComponents = document.getElementById('addedComponentsList').children;
-    for (let i = 0; i < addedComponents.length; i++) {
-        const component = addedComponents[i];
-        const componentName = component.textContent.trim();  // Get component name from the displayed text
-        const inputValue = component.querySelector('input').value;
-        const mappedName = componentsMapping[componentName];
-        if (mappedName) {
-            formData.set(mappedName, inputValue);
-        }
+for (let i = 0; i < addedComponents.length; i++) {
+    const component = addedComponents[i];
+    const componentName = component.textContent.trim();  // Get component name from the displayed text
+    const inputValue = component.querySelector('input').value;
+    const mappedName = componentsMapping[componentName];
+    if (mappedName) {
+        formData.set(mappedName, inputValue);
     }
+}
 
     console.log('Sending POST request');
     fetch('/submit', {
