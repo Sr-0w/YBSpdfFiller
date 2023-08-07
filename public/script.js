@@ -20,39 +20,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 document.getElementById('securitasForm').addEventListener('submit', function(event) {
     event.preventDefault();
-
     var formData = new FormData(event.target);
 
-    // If the "Same as client data" checkbox is checked, copy the client data to the installation data
-    if (document.getElementById('sameAsClientData').checked) {
-        formData.set('Installation_Name', formData.get('Contract_Name'));
-        formData.set('Installation_FirstName', formData.get('Contract_FirstName'));
-        formData.set('Installation_Email', formData.get('Contract_Email'));
-        formData.set('Installation_Street', formData.get('Contract_address'));
-        formData.set('Installation_StreetNr', formData.get('Contract_StreetNr'));
-        formData.set('Installation_PostalCode', formData.get('Contract_PostalCode'));
-        formData.set('Installation_City', formData.get('Contract_City'));
-        formData.set('Installation_Phone_1', formData.get('Contract_Phone_1'));
-        formData.set('Installation_Phone_2', formData.get('Contract_Phone_2'));
-    }
-
-    fetch('component_mapping.json')
-        .then(response => response.json())
-        .then(componentsData => {
-
-            // Aggregate components from the dropdown list and set them in formData
-            const componentListItems = document.querySelectorAll('#addedComponentsList li');
-            componentListItems.forEach(item => {
-                const componentName = item.childNodes[0].nodeValue.trim();
-                const componentKey = componentsData[componentName];
-                if (formData.has(componentKey)) {
-                    formData.set(componentKey, (parseInt(formData.get(componentKey), 10) + 1).toString());
-                } else {
-                    formData.set(componentKey, '1');
-                }
-            });
-
-            const formDataObject = Object.fromEntries(formData);
+    const formDataObject = Object.fromEntries(formData);
 
     // Convert component names using the mapping
     for (let key in formDataObject) {
@@ -119,21 +89,26 @@ addComponentBtn.addEventListener('click', function(event) {
     const selectedComponent = document.getElementById('componentsDropdown').value;
     const count = parseInt(componentsCount.value, 10);
     const mappedName = componentsData[selectedComponent];
+
     if (selectedComponent && count) {
         for (let i = 0; i < count; i++) {
             const listItem = document.createElement('li');
             listItem.textContent = selectedComponent;
-            
-            // Create a hidden input field for each component and append it to the form
-            const hiddenInput = document.createElement('input');
-            hiddenInput.type = 'hidden';
-            hiddenInput.name = mappedName;
-            hiddenInput.value = "1"; // The value is '1' because each input represents one component
-            document.getElementById('securitasForm').appendChild(hiddenInput);
 
-            // Add a space and visual representation for the component in the list
-            const space = document.createTextNode(' ');
-            listItem.appendChild(space);
+            // Check if a hidden input for this component already exists
+            let hiddenInput = document.querySelector(`input[name="${mappedName}"]`);
+            if (hiddenInput) {
+                // If it exists, increment its value
+                hiddenInput.value = (parseInt(hiddenInput.value, 10) + 1).toString();
+            } else {
+                // Otherwise, create a new hidden input for this component
+                hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = mappedName;
+                hiddenInput.value = '1';
+                document.getElementById('securitasForm').appendChild(hiddenInput);
+            }
+
             addedComponentsList.appendChild(listItem);
         }
         componentsCount.value = '';
