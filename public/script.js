@@ -58,7 +58,7 @@ document.getElementById('securitasForm').addEventListener('submit', function(eve
 
     // Add the aggregated component data to the POST data
     for (const component in componentTally) {
-        mappedData[component] = componentTally[component];
+        mappedData[component] = componentTally[component].toString(); // Convert to string here
     }
 
     console.log('Sending POST request');
