@@ -6,13 +6,21 @@ fetch('component_mapping.json')
     .then(componentsData => {
         const mappedData = {};
         for (const [key, value] of formData.entries()) {
-            const stringKey = `${key}`;  // Convert key to string
+            const stringKey = String(key); // Convert key to string explicitly
+            
             if (componentsData[stringKey]) {
-                mappedData[componentsData[stringKey]] = value;
+                const mappedKey = componentsData[stringKey];
+                if (mappedData[mappedKey]) {
+                    // If the component is already present, add to its count
+                    mappedData[mappedKey] += parseInt(value, 10);
+                } else {
+                    mappedData[mappedKey] = parseInt(value, 10);
+                }
             } else {
-                mappedData[stringKey] = value;
+                mappedData[stringKey] = value; // Keep non-component data as strings
             }
         }
+
 document.getElementById('securitasForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
