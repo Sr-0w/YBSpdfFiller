@@ -1,4 +1,3 @@
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
@@ -20,10 +19,10 @@ app.post('/submit', async (req, res) => {
     // Use the form data to fill the PDF
     const formData = req.body;
     console.log('Form data:', formData);
-// Load the component mapping
-const componentMappingPath = path.join(__dirname, 'component_mapping.json');
-const componentMapping = JSON.parse(fs.readFileSync(componentMappingPath, 'utf-8'));
 
+    // Load the component mapping
+    const componentMappingPath = path.join(__dirname, 'component_mapping.json');
+    const componentMapping = JSON.parse(fs.readFileSync(componentMappingPath, 'utf-8'));
 
     // Define the PDF file paths
     const pdfPath = path.join(__dirname, 'public', 'securitashomeyoul.pdf');
@@ -52,18 +51,15 @@ const componentMapping = JSON.parse(fs.readFileSync(componentMappingPath, 'utf-8
       }
     });
 
-    
-// Update component fields based on componentMapping and log the process
-for (const component in componentMapping) {
-    if (formData[component]) {
-        const pdfFieldName = componentMapping[component];
-        const field = form.getTextField(pdfFieldName);
-        console.log(`Processing component: ${component}, Value: ${formData[component]}, PDF Field Name: ${pdfFieldName}`);
-        field.setText(formData[component].toString());
+    // Update component fields based on componentMapping and log the process
+    for (const component in componentMapping) {
+        if (formData[component]) {
+            const pdfFieldName = componentMapping[component];
+            const field = form.getTextField(pdfFieldName);
+            console.log(`Processing component: ${component}, Value: ${formData[component]}, PDF Field Name: ${pdfFieldName}`);
+            field.setText(formData[component].toString());
+        }
     }
-}
-// Insert the components update logic here
-    // ...
 
     // Save the PDF document
     const filledPdfBytes = await pdfDoc.save();
