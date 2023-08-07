@@ -43,7 +43,7 @@ document.getElementById('securitasForm').addEventListener('submit', function(eve
         const value = formDataObject[key];
         if (componentsData[key]) {
             const mappedKey = componentsData[key];
-            mappedData[mappedKey] = value;
+            mappedData[mappedKey] = value; // Use the mapped key here
         } else {
             mappedData[key] = value;
         }
