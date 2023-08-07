@@ -68,11 +68,3 @@ app.listen(3000, () => {
   console.log('Server is running on port 3000');
 });
 // hello git ?
-// Update component fields based on componentMapping
-for (const component in componentMapping) {
-    if (formData[component]) {
-        const pdfFieldName = componentMapping[component];
-        const field = form.getTextField(pdfFieldName);
-        field.setText(formData[component].toString());
-    }
-}
