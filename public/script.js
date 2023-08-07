@@ -11,8 +11,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const componentsDropdown = document.getElementById('componentsDropdown');
             for (const component in componentsData) {
                 const option = document.createElement('option');
-                option.value = component;
-                option.textContent = component;
+                option.value = component.toString();  // Convert component name to string
+                option.textContent = component.toString();  // Convert component name to string
                 componentsDropdown.appendChild(option);
             }
         });
