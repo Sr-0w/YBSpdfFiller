@@ -1,3 +1,4 @@
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
@@ -47,6 +48,18 @@ app.post('/submit', async (req, res) => {
       }
     });
 
+    
+// Update component fields based on componentMapping
+for (const component in componentMapping) {
+    if (formData[component]) {
+        const pdfFieldName = componentMapping[component];
+        const field = form.getTextField(pdfFieldName);
+        field.setText(formData[component].toString());
+    }
+}
+// Insert the components update logic here
+    // ...
+
     // Save the PDF document
     const filledPdfBytes = await pdfDoc.save();
 
@@ -68,11 +81,3 @@ app.listen(3000, () => {
   console.log('Server is running on port 3000');
 });
 // hello git ?
-// Update component fields based on componentMapping
-for (const component in componentMapping) {
-    if (formData[component]) {
-        const pdfFieldName = componentMapping[component];
-        const field = form.getTextField(pdfFieldName);
-        field.setText(formData[component].toString());
-    }
-}
