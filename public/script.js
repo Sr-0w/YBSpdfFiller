@@ -1,22 +1,23 @@
 document.getElementById('securitasForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    var formData = new FormData(event.target);
-
-    // If the "Same as client data" checkbox is checked, copy the client data to the installation data
-    if (document.getElementById('sameAsClientData').checked) {
-        formData.set('Installation_Name', formData.get('Contract_Name'));
-        formData.set('Installation_FirstName', formData.get('Contract_FirstName'));
-        formData.set('Installation_Email', formData.get('Contract_Email'));
-        formData.set('Installation_Street', formData.get('Contract_address'));
-        formData.set('Installation_StreetNr', formData.get('Contract_StreetNr'));
-        formData.set('Installation_PostalCode', formData.get('Contract_PostalCode'));
-        formData.set('Installation_City', formData.get('Contract_City'));
-        formData.set('Installation_Phone_1', formData.get('Contract_Phone_1'));
-        formData.set('Installation_Phone_2', formData.get('Contract_Phone_2'));
-    }
-
-    console.log('Sending POST request');
+    document.getElementById('securitasForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+    
+        var formData = new FormData(event.target);
+    
+        // If the "Same as client data" checkbox is checked, copy the client data to the installation data
+        if (document.getElementById('sameAsClientData').checked) {
+            // ... (existing logic)
+        }
+    
+        // Collect components and their respective values
+        const listItems = addedComponentsList.querySelectorAll('li');
+        listItems.forEach(listItem => {
+            const component = listItem.textContent.trim();
+            const inputValue = listItem.querySelector('input').value;
+            formData.set(componentsData[component], inputValue);
+        });
+    
+        console.log('Sending POST request');
     fetch('/submit', {
         method: 'POST',
         headers: {
