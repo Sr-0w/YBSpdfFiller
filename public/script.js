@@ -73,3 +73,43 @@ document.addEventListener('DOMContentLoaded', (event) => {
         }
     });
 });
+
+// Function to handle the addition of components
+function addComponent() {
+    // Get the dropdown and the selected component
+    let dropdown = document.getElementById('componentDropdown');
+    let selectedComponent = dropdown.options[dropdown.selectedIndex].value;
+
+    // Only proceed if a valid component is selected
+    if (selectedComponent !== 'default') {
+        // Create an input field for the selected component
+        let inputDiv = document.createElement('div');
+        inputDiv.classList.add('input-group', 'mb-3');
+
+        let prependDiv = document.createElement('div');
+        prependDiv.classList.add('input-group-prepend');
+
+        let inputLabel = document.createElement('span');
+        inputLabel.classList.add('input-group-text');
+        inputLabel.innerText = selectedComponent;
+
+        let quantityInput = document.createElement('input');
+        quantityInput.type = 'number';
+        quantityInput.name = selectedComponent;
+        quantityInput.placeholder = 'Quantité';
+        quantityInput.classList.add('form-control');
+
+        prependDiv.appendChild(inputLabel);
+        inputDiv.appendChild(prependDiv);
+        inputDiv.appendChild(quantityInput);
+
+        // Append the input field to the form
+        document.getElementById('componentsContainer').appendChild(inputDiv);
+
+        // Reset the dropdown to default
+        dropdown.selectedIndex = 0;
+    }
+}
+
+// Attach the function to the "+" button
+document.getElementById('addComponentBtn').addEventListener('click', addComponent);
