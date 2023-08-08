@@ -20,10 +20,10 @@ fetch('component_mapping.json')
         console.error('Error fetching component_mapping.json:', error);
     });
 
-    document.getElementById('securitasForm').addEventListener('submit', function(event) {
-        event.preventDefault();
+document.getElementById('securitasForm').addEventListener('submit', function(event) {
+    event.preventDefault();
     
-        var formData = new FormData(event.target);
+    var formData = new FormData(event.target);
 
     // If the "Same as client data" checkbox is checked, copy the client data to the installation data
     if (document.getElementById('sameAsClientData').checked) {
@@ -39,15 +39,15 @@ fetch('component_mapping.json')
     }
 
     const addedComponents = document.getElementById('addedComponentsList').children;
-for (let i = 0; i < addedComponents.length; i++) {
-    const component = addedComponents[i];
-    const componentName = component.textContent.trim();  // Get component name from the displayed text
-    const inputValue = component.querySelector('input').value;
-    const mappedName = componentsMapping[componentName];
-    if (mappedName) {
-        formData.set(mappedName, inputValue);
+    for (let i = 0; i < addedComponents.length; i++) {
+        const component = addedComponents[i];
+        const componentName = component.textContent.trim();  // Get component name from the displayed text
+        const inputValue = component.querySelector('input').value;
+        const mappedId = componentsMapping[componentName];
+        if (mappedId) {
+            formData.set(mappedId.toString(), inputValue);
+        }
     }
-}
 
     console.log('Sending POST request');
     fetch('/submit', {
