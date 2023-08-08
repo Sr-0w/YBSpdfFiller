@@ -36,16 +36,17 @@ app.post('/submit', async (req, res) => {
     const form = pdfDoc.getForm();
 
     console.log('Filling PDF fields...');
-    const allFields = form.getFields();
-    allFields.forEach(field => {
-      const fieldID = field.getName();
-      if (formData[fieldID]) {
-        console.log(`Setting field ${fieldID} with value ${formData[fieldID]}`);
-        field.setText(formData[fieldID]);
-      } else {
-        console.log(`No data provided for field ${fieldID}`);
-      }
-    });
+const allFields = form.getFields();
+allFields.forEach(field => {
+  const fieldID = field.getName();
+  const formDataValue = formData[fieldID] || formData[parseInt(fieldID)];
+  if (formDataValue) {
+    console.log(`Setting field ${fieldID} with value ${formDataValue}`);
+    field.setText(formDataValue);
+  } else {
+    console.log(`No data provided for field ${fieldID}`);
+  }
+});
 
     console.log('Saving modified PDF...');
     const filledPdfBytes = await pdfDoc.save();
