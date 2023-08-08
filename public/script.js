@@ -27,15 +27,15 @@ document.getElementById('securitasForm').addEventListener('submit', function(eve
 
     // If the "Same as client data" checkbox is checked, copy the client data to the installation data
     if (document.getElementById('sameAsClientData').checked) {
-        formData.set('65545', formData.get('65536')); // Installation_Name to Contract_Name
-        formData.set('65546', formData.get('65537')); // Installation_FirstName to Contract_FirstName
-        formData.set('65547', formData.get('65538')); // Installation_Email to Contract_Email
-        formData.set('65551', formData.get('65542')); // Installation_Street to Contract_address
-        formData.set('65550', formData.get('65541')); // Installation_StreetNr to Contract_StreetNr
-        formData.set('65552', formData.get('65543')); // Installation_PostalCode to Contract_PostalCode
-        formData.set('65553', formData.get('65544')); // Installation_City to Contract_City
-        formData.set('65548', formData.get('65539')); // Installation_Phone_1 to Contract_Phone_1
-        formData.set('65549', formData.get('65540')); // Installation_Phone_2 to Contract_Phone_2
+        formData.set(componentsMapping['Installation_Name'], formData.get(componentsMapping['Contract_Name']));
+        formData.set(componentsMapping['Installation_FirstName'], formData.get(componentsMapping['Contract_FirstName']));
+        formData.set(componentsMapping['Installation_Email'], formData.get(componentsMapping['Contract_Email']));
+        formData.set(componentsMapping['Installation_Street'], formData.get(componentsMapping['Contract_address']));
+        formData.set(componentsMapping['Installation_StreetNr'], formData.get(componentsMapping['Contract_StreetNr']));
+        formData.set(componentsMapping['Installation_PostalCode'], formData.get(componentsMapping['Contract_PostalCode']));
+        formData.set(componentsMapping['Installation_City'], formData.get(componentsMapping['Contract_City']));
+        formData.set(componentsMapping['Installation_Phone_1'], formData.get(componentsMapping['Contract_Phone_1']));
+        formData.set(componentsMapping['Installation_Phone_2'], formData.get(componentsMapping['Contract_Phone_2']));
     }
     
 
