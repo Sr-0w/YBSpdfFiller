@@ -101,20 +101,25 @@ document.getElementById('securitasForm').addEventListener('submit', function(eve
 // Add event listener to the checkbox
 document.addEventListener('DOMContentLoaded', (event) => {
     const checkbox = document.getElementById('sameAsClientData');
-    const installationFields = document.querySelectorAll('#131082, #131083, #131084, #131089, #131090, #131086, #131085, #131087, #131088');
     
     checkbox.addEventListener('change', (event) => {
-        if (checkbox.checked) {
-            installationFields.forEach(field => {
-                field.setAttribute('disabled', '');
-            });
-        } else {
-            installationFields.forEach(field => {
-                field.removeAttribute('disabled');
-            });
-        }
+        const installationFields = document.querySelectorAll('[id^="Installation_"]');
+        installationFields.forEach(field => {
+            const clientFieldId = field.id.replace('Installation_', 'Contract_');
+            const clientField = document.getElementById(clientFieldId);
+            if (clientField) {
+                if (checkbox.checked) {
+                    field.value = clientField.value;
+                    field.setAttribute('disabled', '');
+                } else {
+                    field.value = '';
+                    field.removeAttribute('disabled');
+                }
+            }
+        });
     });
 });
+
 
 // Handle the add component button
 const addComponentBtn = document.getElementById('addComponentBtn');
