@@ -101,9 +101,15 @@ document.getElementById('securitasForm').addEventListener('submit', function(eve
 // Add event listener to the checkbox
 document.addEventListener('DOMContentLoaded', (event) => {
     const checkbox = document.getElementById('sameAsClientData');
+    const installationFields = document.querySelectorAll('[id^="Installation_"]');
     
-    checkbox.addEventListener('change', (event) => {
-        const installationFields = document.querySelectorAll('[id^="Installation_"]');
+    // Store initial installation values (useful for when the checkbox is unchecked)
+    const initialInstallationValues = {};
+    installationFields.forEach(field => {
+        initialInstallationValues[field.id] = field.value;
+    });
+
+    const syncFields = () => {
         installationFields.forEach(field => {
             const clientFieldId = field.id.replace('Installation_', 'Contract_');
             const clientField = document.getElementById(clientFieldId);
@@ -112,13 +118,20 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     field.value = clientField.value;
                     field.setAttribute('disabled', '');
                 } else {
-                    field.value = '';
+                    // Restore to initial value instead of just empty string
+                    field.value = initialInstallationValues[field.id];
                     field.removeAttribute('disabled');
                 }
             }
         });
-    });
+    };
+
+    checkbox.addEventListener('change', syncFields);
+    
+    // Ensure fields are in the correct state on load
+    syncFields();
 });
+
 
 
 // Handle the add component button
