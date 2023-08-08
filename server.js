@@ -24,35 +24,36 @@ app.post('/submit', async (req, res) => {
     const pdfPath = path.join(__dirname, 'public', 'securitashomeyoul.pdf');
     const date = new Date();
     const formattedDate = `${date.getFullYear()}${date.getMonth()+1}${date.getDate()}`;
-    const clientName = formData['131105']; // Assuming the client's name is stored in formData with ID 131105
-    const uniqueId = Date.now(); // Use the current timestamp as a unique ID
+    const clientName = formData['131105']; 
+    const uniqueId = Date.now(); 
     const outputPdfPath = path.join(__dirname, 'public', `${formattedDate} - ${clientName} - ${uniqueId}.pdf`);
 
-    // Load the PDF document
+    console.log('Loading PDF document from:', pdfPath);
     const pdfBytes = fs.readFileSync(pdfPath);
     const pdfDoc = await PDFDocument.load(pdfBytes);
 
     // Get the form of the document
     const form = pdfDoc.getForm();
 
-    // Fill in the fields in the PDF
-    console.log('Filling PDF');
+    console.log('Filling PDF fields...');
     const allFields = form.getFields();
     allFields.forEach(field => {
-      const fieldID = field.getName(); // This gets the name, which in your case might be the ID
+      const fieldID = field.getName();
       if (formData[fieldID]) {
+        console.log(`Setting field ${fieldID} with value ${formData[fieldID]}`);
         field.setText(formData[fieldID]);
+      } else {
+        console.log(`No data provided for field ${fieldID}`);
       }
     });
 
-    // Save the PDF document
+    console.log('Saving modified PDF...');
     const filledPdfBytes = await pdfDoc.save();
 
-    // Write the filled PDF to a file
+    console.log('Writing filled PDF to:', outputPdfPath);
     fs.writeFileSync(outputPdfPath, filledPdfBytes);
 
-    // Send the filled PDF in the response
-    console.log('Sending response');
+    console.log('Sending response with filled PDF');
     res.contentType('application/pdf');
     res.setHeader('Content-Disposition', `attachment; filename=${path.basename(outputPdfPath)}`);
     res.sendFile(outputPdfPath);
