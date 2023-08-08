@@ -1,5 +1,6 @@
-// Define componentsMapping at a higher scope
+// Define componentsMapping and fieldsMapping at a higher scope
 let componentsMapping = {};
+let fieldsMapping = {};
 
 // Fetch component_mapping.json and use it in the script
 fetch('component_mapping.json')
@@ -20,43 +21,39 @@ fetch('component_mapping.json')
         console.error('Error fetching component_mapping.json:', error);
     });
 
+// Fetch fields_mapping.json
+fetch('fields_mapping.json')
+    .then(response => response.json())
+    .then(data => {
+        fieldsMapping = data;
+    })
+    .catch(error => {
+        console.error('Error fetching fields_mapping.json:', error);
+    });
+
 document.getElementById('securitasForm').addEventListener('submit', function(event) {
     event.preventDefault();
     
     var formData = new FormData(event.target);
+    let dataToSend = {};
 
-    // If the "Same as client data" checkbox is checked, copy the client data to the installation data
-    if (document.getElementById('sameAsClientData').checked) {
-        formData.set(componentsMapping['Installation_Name'], formData.get(componentsMapping['Contract_Name']));
-        formData.set(componentsMapping['Installation_FirstName'], formData.get(componentsMapping['Contract_FirstName']));
-        formData.set(componentsMapping['Installation_Email'], formData.get(componentsMapping['Contract_Email']));
-        formData.set(componentsMapping['Installation_Street'], formData.get(componentsMapping['Contract_address']));
-        formData.set(componentsMapping['Installation_StreetNr'], formData.get(componentsMapping['Contract_StreetNr']));
-        formData.set(componentsMapping['Installation_PostalCode'], formData.get(componentsMapping['Contract_PostalCode']));
-        formData.set(componentsMapping['Installation_City'], formData.get(componentsMapping['Contract_City']));
-        formData.set(componentsMapping['Installation_Phone_1'], formData.get(componentsMapping['Contract_Phone_1']));
-        formData.set(componentsMapping['Installation_Phone_2'], formData.get(componentsMapping['Contract_Phone_2']));
-    }
-    
-
-    const addedComponents = document.getElementById('addedComponentsList').children;
-    for (let i = 0; i < addedComponents.length; i++) {
-        const component = addedComponents[i];
-        const componentName = component.textContent.trim();  // Get component name from the displayed text
-        const inputValue = component.querySelector('input').value;
-        const mappedId = componentsMapping[componentName];
-        if (mappedId) {
-            formData.set(mappedId.toString(), inputValue);
+    // Convert field names to IDs
+    for (const [key, value] of formData.entries()) {
+        const fieldId = fieldsMapping[key];
+        if (fieldId) {
+            dataToSend[fieldId] = value;
+        } else {
+            dataToSend[key] = value;  // For components, the key is already an ID
         }
     }
 
-    console.log('Sending POST request');
+    console.log('Sending POST request with data:', dataToSend);
     fetch('/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(Object.fromEntries(formData)) // Convert formData to JSON
+        body: JSON.stringify(dataToSend)
       })
       .then(response => {
         if (!response.ok) {
