@@ -47,6 +47,17 @@ document.getElementById('securitasForm').addEventListener('submit', function(eve
         }
     });
 
+    // Handle added components
+    const addedComponents = document.querySelectorAll('#addedComponentsList li');
+    addedComponents.forEach(component => {
+        const componentName = component.textContent.trim();
+        const componentValue = component.querySelector('input').value;
+        const componentId = fieldsMapping[componentName];
+        if (componentId) {
+            dataToSend[componentId] = componentValue;
+        }
+    });
+
     console.log('Sending POST request with data:', dataToSend);
     fetch('/submit', {
         method: 'POST',
