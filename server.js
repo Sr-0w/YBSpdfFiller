@@ -20,15 +20,15 @@ app.post('/submit', async (req, res) => {
     const formData = req.body;
     console.log('Form data:', formData);
 
-    // Load the component mapping
-    const componentMappingPath = path.join(__dirname, 'component_mapping.json');
-    const componentMapping = JSON.parse(fs.readFileSync(componentMappingPath, 'utf-8'));
+    // Load the field mapping
+    const fieldsMappingPath = path.join(__dirname, 'public', 'fields_mapping.json');
+    const fieldsMapping = JSON.parse(fs.readFileSync(fieldsMappingPath, 'utf-8'));
 
     // Define the PDF file paths
     const pdfPath = path.join(__dirname, 'public', 'securitashomeyoul.pdf');
     const date = new Date();
     const formattedDate = `${date.getFullYear()}${date.getMonth()+1}${date.getDate()}`;
-    const clientName = formData.Contract_Name; // Assuming the client's name is stored in formData.Contract_Name
+    const clientName = formData['131105']; // Assuming the client's name is stored in formData with ID 131105
     const uniqueId = Date.now(); // Use the current timestamp as a unique ID
     const outputPdfPath = path.join(__dirname, 'public', `${formattedDate} - ${clientName} - ${uniqueId}.pdf`);
 
@@ -39,27 +39,14 @@ app.post('/submit', async (req, res) => {
     // Get the form of the document
     const form = pdfDoc.getForm();
 
-    // Fill in the fields in the PDF
+    // Fill in the fields in the PDF using the field IDs
     console.log('Filling PDF');
-    Object.keys(formData).forEach(field => {
-      // Ignore the "sameAsClientData" field
-      if (field !== 'sameAsClientData') {
-        const formField = form.getField(field);
-        if (formField) {
-          formField.setText(formData[field]);
-        }
+    Object.keys(formData).forEach(fieldID => {
+      const formField = form.getField(fieldID);
+      if (formField) {
+        formField.setText(formData[fieldID]);
       }
     });
-
-    // Update component fields based on componentMapping and log the process
-    for (const component in componentMapping) {
-        if (formData[component]) {
-            const pdfFieldName = componentMapping[component];
-            const field = form.getTextField(pdfFieldName);
-            console.log(`Processing component: ${component}, Value: ${formData[component]}, PDF Field Name: ${pdfFieldName}`);
-            field.setText(formData[component].toString());
-        }
-    }
 
     // Save the PDF document
     const filledPdfBytes = await pdfDoc.save();
