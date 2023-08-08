@@ -3,10 +3,24 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
 const { PDFDocument } = require('pdf-lib');
+const pdfFillForm = require('pdf-fill-form');
 
 const app = express();
 app.use(bodyParser.json());
 app.use(express.static('public'));
+
+let idToNameMapping = {};
+
+// Load the mapping between id and name when the server starts
+pdfFillForm.read(path.join(__dirname, 'public', 'securitashomeyoul.pdf'))
+    .then(fields => {
+        fields.forEach(field => {
+            idToNameMapping[field.id] = field.name;
+        });
+    })
+    .catch(err => {
+        console.error(err);
+    });
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/index.html');
@@ -36,17 +50,14 @@ app.post('/submit', async (req, res) => {
     const form = pdfDoc.getForm();
 
     console.log('Filling PDF fields...');
-const allFields = form.getFields();
-allFields.forEach(field => {
-  const fieldID = field.getName();
-  const formDataValue = formData[fieldID] || formData[parseInt(fieldID)];
-  if (formDataValue) {
-    console.log(`Setting field ${fieldID} with value ${formDataValue}`);
-    field.setText(formDataValue);
-  } else {
-    console.log(`No data provided for field ${fieldID}`);
-  }
-});
+    Object.keys(formData).forEach(id => {
+        const fieldName = idToNameMapping[id];
+        const fieldValue = formData[id];
+        const field = form.getField(fieldName);
+        if (field) {
+            field.setText(fieldValue);
+        }
+    });
 
     console.log('Saving modified PDF...');
     const filledPdfBytes = await pdfDoc.save();
