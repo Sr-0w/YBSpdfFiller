@@ -27,15 +27,15 @@ document.getElementById('securitasForm').addEventListener('submit', function(eve
 
     // If the "Same as client data" checkbox is checked, copy the client data to the installation data
     if (document.getElementById('sameAsClientData').checked) {
-        formData.set('Installation_Name', formData.get('Contract_Name'));
-        formData.set('Installation_FirstName', formData.get('Contract_FirstName'));
-        formData.set('Installation_Email', formData.get('Contract_Email'));
-        formData.set('Installation_Street', formData.get('Contract_address'));
-        formData.set('Installation_StreetNr', formData.get('Contract_StreetNr'));
-        formData.set('Installation_PostalCode', formData.get('Contract_PostalCode'));
-        formData.set('Installation_City', formData.get('Contract_City'));
-        formData.set('Installation_Phone_1', formData.get('Contract_Phone_1'));
-        formData.set('Installation_Phone_2', formData.get('Contract_Phone_2'));
+        formData.set('131082', formData.get('131073'));
+        formData.set('131083', formData.get('131074'));
+        formData.set('131084', formData.get('131075'));
+        formData.set('131085', formData.get('131079'));
+        formData.set('131086', formData.get('131078'));
+        formData.set('131087', formData.get('131080'));
+        formData.set('131088', formData.get('131081'));
+        formData.set('131089', formData.get('131076'));
+        formData.set('131090', formData.get('131077'));
     }
 
     const addedComponents = document.getElementById('addedComponentsList').children;
@@ -92,7 +92,7 @@ document.getElementById('securitasForm').addEventListener('submit', function(eve
 // Add event listener to the checkbox
 document.addEventListener('DOMContentLoaded', (event) => {
     const checkbox = document.getElementById('sameAsClientData');
-    const installationFields = document.querySelectorAll('#Installation_Name, #Installation_FirstName, #Installation_Email, #Installation_Phone_1, #Installation_Phone_2, #Installation_StreetNr, #Installation_Street, #Installation_PostalCode, #Installation_City');
+    const installationFields = document.querySelectorAll('#131082, #131083, #131084, #131089, #131090, #131086, #131085, #131087, #131088');
     
     checkbox.addEventListener('change', (event) => {
         if (checkbox.checked) {
