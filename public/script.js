@@ -38,14 +38,14 @@ document.getElementById('securitasForm').addEventListener('submit', function(eve
     let dataToSend = {};
 
     // Convert field names to IDs
-    for (const [key, value] of formData.entries()) {
+    formData.forEach((value, key) => {
         const fieldId = fieldsMapping[key];
         if (fieldId) {
             dataToSend[fieldId] = value;
         } else {
             dataToSend[key] = value;  // For components, the key is already an ID
         }
-    }
+    });
 
     console.log('Sending POST request with data:', dataToSend);
     fetch('/submit', {
