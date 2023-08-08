@@ -9,6 +9,7 @@ pdfFillForm.read('securitashomeyoul.pdf')
             fieldMapping[field.id] = field.name;
         });
         fs.writeFileSync('fieldMapping.json', JSON.stringify(fieldMapping, null, 2));
+        console.log("Mapping written to fieldMapping.json");
     })
     .catch(err => {
         console.error(err);
