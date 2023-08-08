@@ -20,10 +20,6 @@ app.post('/submit', async (req, res) => {
     const formData = req.body;
     console.log('Form data:', formData);
 
-    // Load the field mapping
-    const fieldsMappingPath = path.join(__dirname, 'public', 'fields_mapping.json');
-    const fieldsMapping = JSON.parse(fs.readFileSync(fieldsMappingPath, 'utf-8'));
-
     // Define the PDF file paths
     const pdfPath = path.join(__dirname, 'public', 'securitashomeyoul.pdf');
     const date = new Date();
@@ -39,12 +35,13 @@ app.post('/submit', async (req, res) => {
     // Get the form of the document
     const form = pdfDoc.getForm();
 
-    // Fill in the fields in the PDF using the field IDs
+    // Fill in the fields in the PDF
     console.log('Filling PDF');
-    Object.keys(formData).forEach(fieldID => {
-      const formField = form.getField(fieldID);
-      if (formField) {
-        formField.setText(formData[fieldID]);
+    const allFields = form.getFields();
+    allFields.forEach(field => {
+      const fieldID = field.getName(); // This gets the name, which in your case might be the ID
+      if (formData[fieldID]) {
+        field.setText(formData[fieldID]);
       }
     });
 
