@@ -1,3 +1,5 @@
+console.log("Script is loaded");
+
 // Define componentsMapping and fieldsMapping at a higher scope
 let componentsMapping = {};
 let fieldsMapping = {};
@@ -164,3 +166,12 @@ addComponentBtn.addEventListener('click', function(event) {
         componentsCount.value = '';
     }
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+    console.log("DOM fully loaded and parsed");
+    const checkBox = document.getElementById("sameAsClientData");
+    checkBox.addEventListener("change", function() {
+        console.log("Checkbox state changed");
+    });
+});
+
